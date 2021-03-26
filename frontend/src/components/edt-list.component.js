@@ -17,11 +17,11 @@ export default class EdtsList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {edt: []};
+        this.state = {edt: []}; //le state est une liste d'edt
     }
 
     componentDidMount() {
-        axios.get('http://localhost:4000/edt/')
+        axios.get('http://localhost:4000/edt/') //appel au backend pour lister tous les edt dans le state
             .then(response => {
                 this.setState({ edt: response.data });
             })
@@ -30,16 +30,20 @@ export default class EdtsList extends Component {
             })
     }
 
-    edtList() {
+
+    //Liste tous les fils à un id donné
+    edtListSons(id){
         return this.state.edt.map(function(currentEdt, i){
-            return <Edt edt={currentEdt} key={i} />;
+            if(currentEdt.edt_parent_id===id){
+                return <Edt edt={currentEdt} key={i} />;
+            }
         })
     }
 
     render() {
         return (
             <div>
-                <h3>Edts List</h3>
+                <h3>Liste des modules fils</h3>
                 <table className="table table-striped" style={{ marginTop: 20 }} >
                     <thead>
                         <tr>
@@ -49,7 +53,7 @@ export default class EdtsList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.edtList() }
+                        { this.edtListSons(0) }
                     </tbody>
                 </table>
             </div>
