@@ -8,8 +8,6 @@ import EditEdt from "./components/edit-edt.component";
 import EdtList from "./components/edt-list.component";
 import Ariane from "./components/ariane.component";
 
-import logo from "./logo.png";
-
 class App extends Component {
   render() {
     return (
@@ -29,7 +27,8 @@ class App extends Component {
               </div>
             </nav>
             <br/>
-            <Route path="/" exact component={EdtList} />
+          <Route path="/" exact component={EdtList} />
+          <Route path="/:id" exact component={EdtList} />
           <Route path="/edit/:id" component={EditEdt} />
           <Route path="/create" component={CreateEdt} />
 

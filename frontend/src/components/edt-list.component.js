@@ -6,9 +6,11 @@ const Edt = props => (
     <tr>
         <td>{props.edt.edt_id}</td>
         <td>{props.edt.edt_parent_id}</td>
-        <td>{props.edt.edt_name}</td>
         <td>
-            <Link to={"/edit/"+props.edt._id}>Edit</Link>
+        <Link to={"/"+props.edt.edt_id}>{props.edt.edt_name}</Link>
+        </td>
+        <td>
+            <Link to={"/edit/"+props.edt.edt_id}>Edit</Link>
         </td>
     </tr>
 )
@@ -30,6 +32,13 @@ export default class EdtsList extends Component {
             })
     }
 
+    getNumberById(id){
+        this.state.edt.map(function(currentEdt, i){
+            if(currentEdt._id===id){ //on est à l'élément fils 
+            return currentEdt.edt_id
+            }
+        })
+    }
 
     //Liste tous les fils à un id donné
     edtListSons(id){
