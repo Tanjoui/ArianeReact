@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Ariane from "./ariane.component";
 
 const Edt = props => (
     <tr>
@@ -23,6 +24,8 @@ export default class EdtsList extends Component {
     }
 
     componentDidMount() {
+        console.log("params id:")
+        console.log(this.props.match.params.id)
         axios.get('http://localhost:4000/edt/') //appel au backend pour lister tous les edt dans le state
             .then(response => {
                 this.setState({ edt: response.data });
@@ -40,8 +43,22 @@ export default class EdtsList extends Component {
         })
     }
 
+    getIdParameter(){
+        let id;
+        if(this.props.match.params.id == null){
+            id = 0;
+        }else{
+            id = parseInt(this.props.match.params.id)
+
+        }
+        return id
+    }
+
     //Liste tous les fils à un id donné
-    edtListSons(id){
+    edtListSons(){
+        //let id = this.props.match.params.id
+        let id = this.getIdParameter()
+
         return this.state.edt.map(function(currentEdt, i){
             if(currentEdt.edt_parent_id===id){
                 return <Edt edt={currentEdt} key={i} />;
@@ -52,6 +69,7 @@ export default class EdtsList extends Component {
     render() {
         return (
             <div>
+                <Ariane id_parameter={this.getIdParameter()}/>
                 <h3>Liste des modules fils</h3>
                 <table className="table table-striped" style={{ marginTop: 20 }} >
                     <thead>
@@ -62,7 +80,7 @@ export default class EdtsList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        { this.edtListSons(0) }
+                        { this.edtListSons() }
                     </tbody>
                 </table>
             </div>
