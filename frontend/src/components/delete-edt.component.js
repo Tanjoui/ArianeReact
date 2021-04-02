@@ -6,6 +6,7 @@ import Ariane from "./ariane.component";
 const Edt = props => (
     <tr>
         <td>{props.edt.edt_id}</td>
+        <td>{props.edt.edt_parent_id}</td>
         <td>
         <Link to={"/"+props.edt.edt_id}>{props.edt.edt_name}</Link>
         </td>
@@ -48,6 +49,7 @@ export default class EdtsList extends Component {
             id = 0;
         }else{
             id = parseInt(this.props.match.params.id)
+
         }
         return id
     }
@@ -56,13 +58,12 @@ export default class EdtsList extends Component {
     edtListSons(){
         //let id = this.props.match.params.id
         let id = this.getIdParameter()
+
         return this.state.edt.map(function(currentEdt, i){
             if(currentEdt.edt_parent_id===id){
-                console.log(currentEdt)
                 return <Edt edt={currentEdt} key={i} />;
             }
         })
-
     }
 
     render() {
@@ -74,6 +75,7 @@ export default class EdtsList extends Component {
                     <thead>
                         <tr>
                             <th>Id</th>
+                            <th>Parent Id</th>
                             <th>Name</th>
                         </tr>
                     </thead>

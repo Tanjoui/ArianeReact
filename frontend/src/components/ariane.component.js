@@ -3,7 +3,12 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const ArianeEdt = props => (
-        <Link to={"/"+props.edt.edt_id}>{props.edt.edt_name}></Link>
+        <Link to={"/"+props.edt.edt_id}>{props.edt.edt_name}</Link>
+)
+
+const ArianeEdtLast = props => (
+    <Link to={"/"+props.edt.edt_id}>{props.edt.edt_name}></Link>
+    
 )
 
 
@@ -64,12 +69,16 @@ export default class Ariane extends Component{
 
     //ajoute a l'attribut tableau les differents pere d'un fils à l'id donné
     listParents(id){
-        if(id == 0) return (<div></div>);//nous sommes à la racine
-        else{//sinon
+        if(id == 0){
+            let parent = this.getParent(1)
+            this.tableau.edt.push(parent)
+            return (<div></div>);//nous sommes à la racine
+        
+        }
+           else{//sinon
             let parent = this.getParent(id)//on récupère le noeud parent 
             if(parent != null){
                 this.tableau.edt.push(parent)
-                console.log(this.tableau)
                 return this.listParents(parent.edt_id)
             }else{
                 return (<div>(</div>)
@@ -90,18 +99,29 @@ export default class Ariane extends Component{
     //prints l'Ariane partant du fils à droite à l'id donné
     printAriane(){
 
-        let id = this.getIdParameter()+1
+        let id = this.getIdParameter()
 
         this.clearArray(this.tableau.edt)
-        this.listParents(id) //on met a jour le tableau
+        this.listParents(id+1) //on met a jour le tableau
 
         this.tableau.edt.reverse() //on le met dans le bon sens
-        console.log(this.tableau)
-
-        return this.tableau.edt.map(function(currentEdt, i){
-                return <ArianeEdt edt={currentEdt} key={i} />;
-                })
+        if(id == 0){
+            return <div>Vous êtes à la racine, choississez un module</div>
         }
+        else{
+
+        }
+            return this.tableau.edt.map(function(currentEdt, i){
+                if(currentEdt.edt_id == id){
+                    return <ArianeEdt edt={currentEdt} key={i} />;
+                }else{
+                    return <ArianeEdtLast edt={currentEdt} key={i} />;
+                }
+                    
+            })
+        }
+
+    
     
     getIdParameter(){
         return parseInt(this.props.id_parameter)
@@ -110,7 +130,7 @@ export default class Ariane extends Component{
     
     render() {
         return (
-            <div class="breadcrumb flat">
+            <div class="breadcrumb">
                 { 
                     this.printAriane() 
                 }
